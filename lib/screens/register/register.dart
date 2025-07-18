@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/blocs/auth/auth_bloc.dart';
 import 'package:flutter_assessment/configs/bloc/state.dart';
+import 'package:flutter_assessment/configs/extensions/build_context.dart';
 import 'package:flutter_assessment/routes/routes.dart';
 import 'package:flutter_assessment/widgets/form/password_field.dart';
 import 'package:flutter_assessment/widgets/loader/loader.dart';
@@ -31,9 +32,7 @@ class RegisterScreen extends StatelessWidget {
           if (isFailure) {
             registerState as ViewStateError;
             final errorMsg = registerState.failure.errorMessage;
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(errorMsg)));
+            context.showSnackBar(errorMsg);
           }
 
           if (isSuccess) {

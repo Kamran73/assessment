@@ -11,9 +11,7 @@ class _RandomQuote extends StatelessWidget {
           final errMsg =
               (state.getQuote as ViewStateError).failure.errorMessage;
 
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(errMsg)));
+          context.showSnackBar(errMsg);
         }
       },
       builder: (context, state) {

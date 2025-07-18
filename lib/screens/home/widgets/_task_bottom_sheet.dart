@@ -20,13 +20,11 @@ class _TaskBottomSheetState extends State<_TaskBottomSheet> {
               previous.addTask != current.addTask ||
               previous.updateTask != current.updateTask,
       listener: (context, state) {
-
         final isLoading = state.addTask.isLoading || state.updateTask.isLoading;
         final isFailure = state.addTask.isFailure || state.updateTask.isFailure;
         final isSuccess = state.addTask.isSuccess || state.updateTask.isSuccess;
 
-
-        if (isLoading ) {
+        if (isLoading) {
           // show loading
           showDialog(
             context: context,
@@ -42,10 +40,14 @@ class _TaskBottomSheetState extends State<_TaskBottomSheet> {
 
         if (isFailure) {
           Navigator.pop(context); // closes loading modal
-          final error = (state.updateTask as ViewStateError).failure;
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(error.msg)));
+
+          Failure error;
+          if (state.updateTask.isFailure) {
+            error = (state.updateTask as ViewStateError).failure;
+          } else {
+            error = (state.addTask as ViewStateError).failure;
+          }
+          context.showSnackBar(error.errorMessage);
         }
       },
       child: Padding(

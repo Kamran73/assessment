@@ -5,11 +5,13 @@ class FullScreenLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.maxFinite,
-      height: double.maxFinite,
-      color: Colors.black.withValues(alpha: 0.80),
-      child: const Center(child: CircularProgressIndicator()),
+    return Positioned.fill(
+      child: Container(
+        width: double.maxFinite,
+        height: double.maxFinite,
+        color: Colors.black.withValues(alpha: 0.80),
+        child: const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }

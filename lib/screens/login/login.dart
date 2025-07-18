@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/blocs/auth/auth_bloc.dart';
 import 'package:flutter_assessment/configs/bloc/state.dart';
+import 'package:flutter_assessment/configs/extensions/build_context.dart';
 import 'package:flutter_assessment/routes/routes.dart';
 import 'package:flutter_assessment/widgets/form/password_field.dart';
 import 'package:flutter_assessment/widgets/loader/loader.dart';
@@ -17,7 +18,6 @@ class LoginScreen extends StatelessWidget {
 
     final authBloc = context.read<AuthBloc>();
 
-
     return Scaffold(
       appBar: AppBar(title: const Text('Login'), centerTitle: true),
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -32,16 +32,14 @@ class LoginScreen extends StatelessWidget {
           if (isFailure) {
             loginState as ViewStateError;
             final errorMsg = loginState.failure.errorMessage;
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(errorMsg)));
+            context.showSnackBar(errorMsg);
           }
 
           if (isSuccess) {
             Navigator.pushNamedAndRemoveUntil(
               context,
               Routes.home,
-                  (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false,
             );
           }
         },
@@ -83,24 +81,26 @@ class LoginScreen extends StatelessWidget {
 
                           // call login event
                           final email = formState?.value['email'] as String;
-                          final password = formState?.value['password'] as String;
+                          final password =
+                              formState?.value['password'] as String;
 
-                          authBloc.add(AuthEvent.login(email: email, password: password));
+                          authBloc.add(
+                            AuthEvent.login(email: email, password: password),
+                          );
                         },
                         child: const Text('Login'),
                       ),
                       const SizedBox(height: 5),
                       ElevatedButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, Routes.register),
+                        onPressed:
+                            () => Navigator.pushNamed(context, Routes.register),
                         child: const Text('Register'),
                       ),
                     ],
                   ),
                 ),
               ),
-              if (state.login.isLoading)
-                const FullScreenLoader(),
+              if (state.login.isLoading) const FullScreenLoader(),
             ],
           );
         },
