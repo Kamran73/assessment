@@ -3,16 +3,29 @@
 A new Flutter project for sastaticket.pk assessment test.
 
 ## Project architecture
-lib/ – Main Flutter code:
+
+lib/ -
+
   blocs/ – BLoC classes: one for Auth (AuthBloc), one for Tasks (TaskBloc), and one for Quotes (QuoteBloc), each with its events, states, and data providers.
-  models/ – Data classes (using Freezed): Task and Quote models with JSON serialization.
-  screens/ – UI screens: Login, Register, and Home. Home screen is subdivided into widgets (_TasksBody, _TaskBottomSheet, _RandomQuote).
-  routes/ – App route definitions (Routes.login, Routes.register, Routes.home) and route builder (appRoutes). The home route wraps the HomeScreen in two BlocProviders (Tasks and Quote).
-  widgets/ – Reusable widgets: a custom password field and a full-screen loading overlay.
-  firebase_options.dart – Generated Firebase configuration for Android, iOS, and Web (via FlutterFire CLI).
-  State Management: We use the flutter_bloc package. For example, the AuthBloc handles _Register, _Login, and _Logout events and exposes corresponding loading/success/error states to the UI
-raw.githubusercontent.com
-. The TaskBloc handles adding, fetching, updating, and deleting tasks
-.Forms and Validation: All forms are built with flutter_form_builder. Validators from form_builder_validators ensure fields meet requirements (e.g. Validators.required, Validators.email, Validators.minLength(3)).
+  
+  models/ – Data classes (using Freezed)
+  
+  screens/ – UI screens: Login, Register, and Home.
+  
+  routes/ – For routes.
 
 
+## Firebase setup:
+
+  Firebase is set up using Firebase_Cli, which made it very easy and quick
+
+  Test Credential:   email:  kamran@gmail.com  password: 123456
+
+## Areas where faced challenges
+
+  I read about bloc implementation with freezed for this project because before this, I was using Cubits with Equatable.
+
+## Functionalities/-
+
+  1. Add, Edit, done/isDone, Delete(onLongPress)
+  2. Show random quote
