@@ -1,21 +1,30 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_assessment/screens/home.dart';
+import 'package:flutter_assessment/blocs/auth/auth_bloc.dart';
+import 'package:flutter_assessment/routes/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final user = FirebaseAuth.instance.currentUser;
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mini task manager',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+  runApp(
+    BlocProvider(
+      create: (context) => AuthBloc(),
+      child: MaterialApp(
+        title: 'Mini task manager',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          useMaterial3: false,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        routes: appRoutes,
+        initialRoute: user == null ? Routes.login : Routes.home,
       ),
-      home: const HomeScreen(),
-    );
-  }
+    ),
+  );
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "501465790492",
+    "project_id": "flutter-assess",
+    "storage_bucket": "flutter-assess.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501465790492:android:58755286cc52e1adf107d9",
+        "android_client_info": {
+          "package_name": "com.example.flutter_assessment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6UdB-41qvY99F64pAEJO0rd4fwUVaC-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
