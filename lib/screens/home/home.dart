@@ -12,7 +12,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 part 'widgets/_task_bottom_sheet.dart';
+
 part 'widgets/_random_quote.dart';
+
 part 'widgets/_tasks_body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,58 +22,35 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = context.read<AuthBloc>();
+    final taskBloc = context.watch<TaskBloc>();
+    final taskState = taskBloc.state;
+
+    final isLoading =
+        taskState.fetchTasks.isLoading ||
+        taskState.removeTask.isLoading ||
+        taskState.updateTask.isLoading;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notes app'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              authBloc.add(const AuthEvent.logout());
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+        actions: [const _LogoutButton()],
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => showTaskSheet(context),
       ),
-      body: BlocConsumer<AuthBloc, AuthState>(
-        listenWhen: (previous, current) => previous.logout != current.logout,
-        buildWhen: (previous, current) => previous.logout != current.logout,
-        listener: (context, state) {
-          if (state.logout.isSuccess) {
-            Navigator.pushReplacementNamed(context, Routes.login);
-          }
-        },
-        builder: (context, state) {
-          final logoutState = state.logout;
-
-          final taskBloc = context.watch<TaskBloc>();
-          final taskState = taskBloc.state;
-
-          final isLoading =
-              taskState.fetchTasks.isLoading ||
-              taskState.removeTask.isLoading ||
-              taskState.updateTask.isLoading ||
-              logoutState.isLoading;
-
-          return Stack(
+      body: Stack(
+        children: [
+          const Column(
             children: [
-              const Column(
-                children: [
-                  _RandomQuote(),
-                  SizedBox(height: 10,),
-                  Expanded(child: _TasksBody()),
-                ],
-              ),
-              if (isLoading) const FullScreenLoader(),
+              _RandomQuote(),
+              SizedBox(height: 10),
+              Expanded(child: _TasksBody()),
             ],
-          );
-        },
+          ),
+          if (isLoading) const FullScreenLoader(),
+        ],
       ),
     );
   }
@@ -91,6 +70,30 @@ class HomeScreen extends StatelessWidget {
           child: const _TaskBottomSheet(),
         );
       },
+    );
+  }
+}
+
+class _LogoutButton extends StatelessWidget {
+  const _LogoutButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
+
+    return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (prev, curr) => prev.logout != curr.logout,
+      listener: (context, state) {
+        if (state.logout.isSuccess) {
+          Navigator.pushReplacementNamed(context, Routes.login);
+        }
+      },
+      child: IconButton(
+        onPressed: () {
+          authBloc.add(const AuthEvent.logout());
+        },
+        icon: const Icon(Icons.logout),
+      ),
     );
   }
 }
