@@ -9,7 +9,7 @@ class _DataProvider {
   static Future<Task> addTask({required Map<String, dynamic> payload}) async {
     try {
       final uid = _auth.currentUser?.uid;
-      if (uid == null) Exception('User not logged in');
+      if (uid == null) throw Exception('User not logged in');
 
       final newDoc = _tasks.doc();
 

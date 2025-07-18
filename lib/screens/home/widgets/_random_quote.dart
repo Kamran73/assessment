@@ -15,17 +15,29 @@ class _RandomQuote extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state.getQuote.isSuccess) {
+        final isLoading = state.getQuote.isLoading;
+        final isSuccess = state.getQuote.isSuccess;
+        final isLoadingOrSuccess = isLoading || isSuccess;
+
+        String quoteText = '';
+        if (isLoading) {
+          quoteText = 'Fetching quote...';
+        }
+        if (isSuccess) {
           final quote = (state.getQuote as ViewStateSuccess).data as Quote?;
+          quoteText = quote?.q ?? '';
+        }
+        if (isLoadingOrSuccess) {
           return Container(
             color: Colors.black54,
             padding: const EdgeInsets.all(20),
             child: Text(
-              quote?.q ?? '',
+              quoteText,
               style: const TextStyle(fontSize: 30, color: Colors.white),
             ),
           );
         }
+
         return const SizedBox.shrink();
       },
     );
